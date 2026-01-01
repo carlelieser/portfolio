@@ -1,10 +1,15 @@
 {
-	"name": "carlos-santos-site",
+	"name": "portfolio",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
 	"engines": {
 		"node": ">=20.0.0"
+	},
+	"author": {
+		"name": "Carlos Santos",
+		"email": "hello@carlelieser.dev",
+		"url": "https://carlelieser.dev"
 	},
 	"scripts": {
 		"start": "node build",
