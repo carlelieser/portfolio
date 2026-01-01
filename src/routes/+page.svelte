@@ -9,7 +9,7 @@
 	<title>Carlos Santos | Software Developer & Tinkerer</title>
 	<meta
 		name="description"
-		content="I like to build things."
+		content="A home for my projects and a way to connect."
 	/>
 </svelte:head>
 
