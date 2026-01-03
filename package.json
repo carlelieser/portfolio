@@ -37,6 +37,7 @@
 		"autoprefixer": "^10.4.23",
 		"bits-ui": "^2.14.4",
 		"clsx": "^2.1.1",
+		"embla-carousel-svelte": "^8.6.0",
 		"eslint": "^9.39.2",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.13.1",
@@ -54,6 +55,8 @@
 	},
 	"dependencies": {
 		"@lordicon/element": "^2.0.1",
+		"@mlc-ai/web-llm": "^0.2.80",
+		"@sinclair/typebox": "^0.34.46",
 		"@supabase/supabase-js": "^2.87.3",
 		"@threlte/core": "^8.3.1",
 		"@threlte/extras": "^9.7.1",

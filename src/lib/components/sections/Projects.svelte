@@ -4,12 +4,17 @@
 		Card,
 		CardContent,
 		CardDescription,
+		CardFooter,
 		CardHeader,
 		CardTitle
 	} from '$lib/components/ui/card';
+	import { Badge } from '$lib/components/ui/badge';
 	import { AnimatedButton } from '$lib/components/ui/lordicon';
 	import { LORDICON_ICONS } from '$lib/config/lordicon';
-	import { Bot, Github, Star, GitFork, Loader2 } from 'lucide-svelte';
+	import { Github, Star, GitFork } from 'lucide-svelte';
+	import FeaturedProjects from './FeaturedProjects.svelte';
+	import { RepoCTA } from '$lib/components/ui/repo-cta';
+	import { webLLMService } from '$lib/services/webllm';
 
 	interface GitHubRepo {
 		name: string;
@@ -23,15 +28,6 @@
 
 	const GITHUB_USERNAME = 'carlelieser';
 
-	const featuredProject = {
-		title: 'VirtueStrong',
-		description:
-			'An AI-powered mental wellness app with multiple virtual coaches, each with their own personality and approach. Built with a modern full-stack architecture.',
-		url: 'https://app.virtuestrong.ai',
-		icon: Bot,
-		tags: ['AI/LLM', 'Full-Stack', 'SaaS', 'TypeScript']
-	};
-
 	let repos: GitHubRepo[] = [];
 	let loading = true;
 	let error: string | null = null;
@@ -39,7 +35,7 @@
 	async function fetchGitHubRepos() {
 		try {
 			const response = await fetch(
-				`https://api.github.com/search/repositories?q=user:${GITHUB_USERNAME}+fork:false&sort=updated&order=desc&per_page=6`,
+				`https://api.github.com/search/repositories?q=user:${GITHUB_USERNAME}+fork:false+-repo:${GITHUB_USERNAME}/portfolio&sort=updated&order=desc&per_page=6`,
 				{
 					headers: {
 						Accept: 'application/vnd.github.v3+json'
@@ -62,6 +58,12 @@
 
 	onMount(() => {
 		fetchGitHubRepos();
+		// Initialize LLM for CTA generation (non-blocking)
+		if (webLLMService.isSupported()) {
+			webLLMService.initialize().catch(() => {
+				// Silently fail - fallback CTAs will be used
+			});
+		}
 	});
 
 	function getLanguageColor(language: string | null): string {
@@ -93,49 +95,8 @@
 			</p>
 		</div>
 
-		<!-- Featured Project -->
-		<div class="mb-12">
-			<Card class="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
-				<div class="grid md:grid-cols-2 gap-6 p-6 sm:p-8">
-					<div class="space-y-4">
-						<div class="flex items-center gap-3">
-							<div class="p-2 rounded-lg bg-primary/10 text-primary">
-								<svelte:component this={featuredProject.icon} class="w-6 h-6" />
-							</div>
-							<span class="text-xs font-mono text-primary uppercase tracking-wider">Featured Project</span>
-						</div>
-						<h3 class="text-2xl sm:text-3xl font-bold">{featuredProject.title}</h3>
-						<p class="text-muted-foreground leading-relaxed">
-							{featuredProject.description}
-						</p>
-						<div class="flex flex-wrap gap-2">
-							{#each featuredProject.tags as tag}
-								<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary font-mono">
-									{tag}
-								</span>
-							{/each}
-						</div>
-						<div class="pt-2">
-							<AnimatedButton
-								icon={LORDICON_ICONS.launch}
-								label="Visit App"
-								variant="default"
-								iconSize={18}
-								iconPosition="right"
-								href={featuredProject.url}
-								target="_blank"
-								rel="noopener noreferrer"
-							/>
-						</div>
-					</div>
-					<div class="hidden md:flex items-center justify-center">
-						<div class="w-full max-w-xs aspect-square rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center">
-							<svelte:component this={featuredProject.icon} class="w-24 h-24 text-primary/40" />
-						</div>
-					</div>
-				</div>
-			</Card>
-		</div>
+		<!-- Featured Projects -->
+		<FeaturedProjects />
 
 		<!-- GitHub Repos Grid -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -145,20 +106,27 @@
 						<CardHeader>
 							<div class="flex items-start justify-between">
 								<div class="p-2 rounded-lg bg-muted mb-4 w-10 h-10"></div>
-								<div class="h-4 w-16 bg-muted rounded"></div>
+								<div class="flex items-center gap-3">
+									<div class="h-4 w-8 bg-muted rounded"></div>
+									<div class="h-4 w-8 bg-muted rounded"></div>
+								</div>
 							</div>
 							<div class="h-6 w-3/4 bg-muted rounded mb-2"></div>
-							<div class="space-y-2">
+							<div class="space-y-2 min-h-[3rem]">
 								<div class="h-4 w-full bg-muted rounded"></div>
 								<div class="h-4 w-2/3 bg-muted rounded"></div>
 							</div>
 						</CardHeader>
-						<CardContent>
-							<div class="flex gap-2">
+						<CardContent class="flex-1">
+							<div class="flex flex-wrap gap-2">
+								<div class="h-5 w-20 bg-muted rounded-full"></div>
+								<div class="h-5 w-14 bg-muted rounded-full"></div>
 								<div class="h-5 w-16 bg-muted rounded-full"></div>
-								<div class="h-5 w-12 bg-muted rounded-full"></div>
 							</div>
 						</CardContent>
+						<CardFooter>
+							<div class="h-10 w-32 bg-muted rounded-md ml-auto"></div>
+						</CardFooter>
 					</Card>
 				{/each}
 			{:else if error}
@@ -197,21 +165,31 @@
 								{repo.description || 'No description available'}
 							</CardDescription>
 						</CardHeader>
-						<CardContent>
+						<CardContent class="flex-1">
 							<div class="flex flex-wrap items-center gap-2">
 								{#if repo.language}
-									<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary font-mono">
+									<Badge variant="outline" class="gap-1.5 bg-primary/10 text-primary border-transparent font-mono">
 										<span class="w-2 h-2 rounded-full {getLanguageColor(repo.language)}"></span>
 										{repo.language}
-									</span>
+									</Badge>
 								{/if}
-								{#each repo.topics.slice(0, 2) as topic}
-									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground font-mono">
-										{topic}
-									</span>
+								{#each repo.topics as topic}
+									<Badge variant="muted" class="font-mono">{topic}</Badge>
 								{/each}
 							</div>
 						</CardContent>
+						<CardFooter>
+							<RepoCTA
+								repo={{
+									name: repo.name,
+									description: repo.description,
+									language: repo.language,
+									topics: repo.topics
+								}}
+								href={repo.html_url}
+								class="ml-auto"
+							/>
+						</CardFooter>
 					</Card>
 				{/each}
 			{/if}

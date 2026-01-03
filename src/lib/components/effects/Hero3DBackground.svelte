@@ -35,7 +35,8 @@
 	let {
 		shapeCount = 5,
 		opacity = 0.2,
-		blurAmount = undefined
+		blurAmount = undefined,
+		noiseOpacity = 0.08
 	}: {
 		/** Number of shapes to generate (defaults to 5) */
 		shapeCount?: number;
@@ -43,6 +44,8 @@
 		opacity?: number;
 		/** Optional CSS blur filter value (e.g., "8px") for depth-of-field effect */
 		blurAmount?: string | undefined;
+		/** Noise overlay opacity (0-1, defaults to 0.08). Set to 0 to disable. */
+		noiseOpacity?: number;
 	} = $props();
 
 	/** HSL color type for interpolation */
@@ -343,6 +346,14 @@
 	});
 </script>
 
+<!-- SVG Noise Filter -->
+<svg class="hidden" aria-hidden="true">
+	<filter id="noise">
+		<feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
+		<feColorMatrix type="saturate" values="0" in="noise" result="mono" />
+	</filter>
+</svg>
+
 <!--
 	ACCESSIBILITY: Container is decorative and hidden from assistive technology
 
@@ -363,11 +374,20 @@
 	- No motion occurs, respecting user preference
 -->
 <div
-	class="absolute inset-0 overflow-hidden pointer-events-none [transform-style:preserve-3d]"
+	class="absolute inset-0 overflow-hidden pointer-events-none transform-3d"
 	style:z-index="0"
 	role="presentation"
 	aria-hidden="true"
 >
+	<!-- Noise Overlay -->
+	{#if noiseOpacity > 0}
+		<div
+				class="absolute inset-0 pointer-events-none mix-blend-overlay"
+				style:opacity={noiseOpacity}
+				style:filter="url(#noise)"
+				aria-hidden="true"
+		></div>
+	{/if}
 	{#each shapes as shape (shape.id)}
 		{@const floatX = Math.sin(time * shape.float.speedX + shape.float.phaseX) * shape.float.amplitudeX}
 		{@const floatY = Math.sin(time * shape.float.speedY + shape.float.phaseY) * shape.float.amplitudeY}

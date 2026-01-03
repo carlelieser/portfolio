@@ -3,6 +3,8 @@
 	import About from '$lib/components/sections/About.svelte';
 	import Projects from '$lib/components/sections/Projects.svelte';
 	import Contact from '$lib/components/sections/Contact.svelte';
+	import Patreon from '$lib/components/sections/Patreon.svelte';
+	import Footer from '$lib/components/sections/Footer.svelte';
 </script>
 
 <svelte:head>
@@ -18,4 +20,6 @@
 	<About />
 	<Projects />
 	<Contact />
+	<Patreon />
 </main>
+<Footer />

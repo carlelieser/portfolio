@@ -1,0 +1,9 @@
+[
+	{
+		"title": "VirtueStrong",
+		"description": "An AI-powered mental wellness app with multiple virtual coaches, each with their own personality and approach. Built with a modern full-stack architecture.",
+		"url": "https://app.virtuestrong.ai",
+		"image": "/images/projects/virtuestrong.svg",
+		"tags": ["AI/LLM", "Full-Stack", "SaaS", "TypeScript"]
+	}
+]
