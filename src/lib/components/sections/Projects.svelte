@@ -203,14 +203,14 @@
 				>
 					<Empty.Root class="h-full rounded-xl border border-dashed border-border bg-muted/30 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50">
 						<Empty.Header>
-							<Empty.Media variant="icon" class="group-hover:bg-primary/20 transition-colors">
+							<Empty.Media variant="icon" >
 								<GithubIcon class="size-8" />
 							</Empty.Media>
-							<Empty.Title class="group-hover:text-primary transition-colors">View More</Empty.Title>
+							<Empty.Title >View More</Empty.Title>
 							<Empty.Description>Explore all repositories</Empty.Description>
 						</Empty.Header>
 						<Empty.Content>
-							<ArrowRightIcon class="size-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+							<ArrowRightIcon class="size-5 text-muted-foreground transition-all" />
 						</Empty.Content>
 					</Empty.Root>
 				</a>
