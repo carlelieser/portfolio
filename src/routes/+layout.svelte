@@ -6,6 +6,12 @@
 	let { children } = $props();
 
 	$effect(() => {
+		if (typeof window === 'undefined') return;
+
+		// Disable Lenis on mobile for better native scrolling
+		const isMobile = window.matchMedia('(max-width: 768px), (hover: none)').matches;
+		if (isMobile) return;
+
 		const lenis = new Lenis({
 			duration: 1.2,
 			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
