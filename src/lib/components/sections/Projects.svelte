@@ -11,6 +11,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { AnimatedButton } from '$lib/components/ui/lordicon';
 	import { LORDICON_ICONS } from '$lib/config/lordicon';
+	import * as Empty from '$lib/components/ui/empty';
 	import GithubIcon from '@lucide/svelte/icons/github';
 	import StarIcon from '@lucide/svelte/icons/star';
 	import GitForkIcon from '@lucide/svelte/icons/git-fork';
@@ -198,16 +199,20 @@
 					href="https://github.com/carlelieser?tab=repositories"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="group flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-border bg-muted/30 p-8 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50"
+					class="group"
 				>
-					<div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
-						<GithubIcon class="w-8 h-8" />
-					</div>
-					<div class="text-center">
-						<p class="font-semibold text-foreground group-hover:text-primary transition-colors">View More</p>
-						<p class="text-sm text-muted-foreground">Explore all repositories</p>
-					</div>
-					<ArrowRightIcon class="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+					<Empty.Root class="h-full rounded-xl border border-dashed border-border bg-muted/30 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50">
+						<Empty.Header>
+							<Empty.Media variant="icon" class="group-hover:bg-primary/20 transition-colors">
+								<GithubIcon class="size-8" />
+							</Empty.Media>
+							<Empty.Title class="group-hover:text-primary transition-colors">View More</Empty.Title>
+							<Empty.Description>Explore all repositories</Empty.Description>
+						</Empty.Header>
+						<Empty.Content>
+							<ArrowRightIcon class="size-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+						</Empty.Content>
+					</Empty.Root>
 				</a>
 			{/if}
 		</div>
