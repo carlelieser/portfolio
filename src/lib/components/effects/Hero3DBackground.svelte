@@ -206,6 +206,7 @@
 	 * - Respects user preferences and system settings
 	 */
 	let prefersReducedMotion = $state(false);
+	let isMobile = $state(false);
 
 	/**
 	 * Pointer-based parallax state
@@ -241,21 +242,28 @@
 		// Check if matchMedia is supported (for SSR compatibility)
 		if (typeof window === 'undefined' || !window.matchMedia) return;
 
-		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const mobileQuery = window.matchMedia('(max-width: 768px), (hover: none)');
 
-		// Set initial value
-		prefersReducedMotion = mediaQuery.matches;
+		// Set initial values
+		prefersReducedMotion = motionQuery.matches;
+		isMobile = mobileQuery.matches;
 
-		// Listen for changes (user may toggle preference during session)
-		const handleChange = (e: MediaQueryListEvent) => {
+		// Listen for changes
+		const handleMotionChange = (e: MediaQueryListEvent) => {
 			prefersReducedMotion = e.matches;
 		};
+		const handleMobileChange = (e: MediaQueryListEvent) => {
+			isMobile = e.matches;
+		};
 
-		mediaQuery.addEventListener('change', handleChange);
+		motionQuery.addEventListener('change', handleMotionChange);
+		mobileQuery.addEventListener('change', handleMobileChange);
 
-		// Cleanup: remove listener when component unmounts
+		// Cleanup
 		return () => {
-			mediaQuery.removeEventListener('change', handleChange);
+			motionQuery.removeEventListener('change', handleMotionChange);
+			mobileQuery.removeEventListener('change', handleMobileChange);
 		};
 	});
 
@@ -379,8 +387,8 @@
 	role="presentation"
 	aria-hidden="true"
 >
-	<!-- Noise Overlay -->
-	{#if noiseOpacity > 0}
+	<!-- Noise Overlay (disabled on mobile for performance) -->
+	{#if noiseOpacity > 0 && !isMobile}
 		<div
 				class="absolute inset-0 pointer-events-none mix-blend-overlay"
 				style:opacity={noiseOpacity}
@@ -388,38 +396,42 @@
 				aria-hidden="true"
 		></div>
 	{/if}
-	{#each shapes as shape (shape.id)}
-		{@const floatX = Math.sin(time * shape.float.speedX + shape.float.phaseX) * shape.float.amplitudeX}
-		{@const floatY = Math.sin(time * shape.float.speedY + shape.float.phaseY) * shape.float.amplitudeY}
-		{@const floatZ = Math.sin(time * shape.float.speedZ + shape.float.phaseZ) * shape.float.amplitudeZ}
-		{@const floatRotX = Math.sin(time * shape.float.speedRotX + shape.float.phaseRotX) * shape.float.amplitudeRotX}
-		{@const floatRotY = Math.sin(time * shape.float.speedRotY + shape.float.phaseRotY) * shape.float.amplitudeRotY}
+	{#each shapes.slice(0, isMobile ? 3 : shapes.length) as shape (shape.id)}
+		{@const floatX = isMobile ? 0 : Math.sin(time * shape.float.speedX + shape.float.phaseX) * shape.float.amplitudeX}
+		{@const floatY = isMobile ? 0 : Math.sin(time * shape.float.speedY + shape.float.phaseY) * shape.float.amplitudeY}
+		{@const floatZ = isMobile ? 0 : Math.sin(time * shape.float.speedZ + shape.float.phaseZ) * shape.float.amplitudeZ}
+		{@const floatRotX = isMobile ? 0 : Math.sin(time * shape.float.speedRotX + shape.float.phaseRotX) * shape.float.amplitudeRotX}
+		{@const floatRotY = isMobile ? 0 : Math.sin(time * shape.float.speedRotY + shape.float.phaseRotY) * shape.float.amplitudeRotY}
 		{@const nudgeStrength = 15}
-		{@const blobRadii = shape.blob.phases.map((phase, idx) => {
-			const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 18;
-			const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 12;
-			return Math.max(35, shape.blob.baseRadii[idx] + wave1 + wave2);
-		})}
+		{@const blobRadii = isMobile
+			? shape.blob.baseRadii
+			: shape.blob.phases.map((phase, idx) => {
+				const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 18;
+				const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 12;
+				return Math.max(35, shape.blob.baseRadii[idx] + wave1 + wave2);
+			})}
 		{@const blobRadius = `${blobRadii[0]}% ${blobRadii[1]}% ${blobRadii[2]}% ${blobRadii[3]}% / ${blobRadii[4]}% ${blobRadii[5]}% ${blobRadii[6]}% ${blobRadii[7]}%`}
 		{@const gradient = getGradient(colorStates[shape.id])}
+		{@const mobileBlur = isMobile ? '40px' : blurAmount}
 		<div
-			class="absolute will-change-transform"
+			class="absolute"
+			class:will-change-transform={!isMobile}
 			style:top={shape.top}
 			style:left={shape.left}
-			style:width="{shape.size}px"
-			style:height="{shape.size}px"
+			style:width="{isMobile ? shape.size * 0.7 : shape.size}px"
+			style:height="{isMobile ? shape.size * 0.7 : shape.size}px"
 			style:opacity={opacity}
 			style:border-radius={blobRadius}
 			style:background={gradient}
-			style:transform="
-				translateX({floatX + smoothMouseX * nudgeStrength}px)
-				translateY({floatY + smoothMouseY * nudgeStrength}px)
-				translateZ({shape.z + floatZ}px)
-				rotateX({shape.rotX + floatRotX + smoothMouseY * -3}deg)
-				rotateY({shape.rotY + floatRotY + smoothMouseX * 3}deg)
-			"
+			style:transform={isMobile
+				? `translateZ(${shape.z}px)`
+				: `translateX(${floatX + smoothMouseX * nudgeStrength}px)
+				   translateY(${floatY + smoothMouseY * nudgeStrength}px)
+				   translateZ(${shape.z + floatZ}px)
+				   rotateX(${shape.rotX + floatRotX + smoothMouseY * -3}deg)
+				   rotateY(${shape.rotY + floatRotY + smoothMouseX * 3}deg)`}
 			style:backface-visibility="hidden"
-			style:filter={blurAmount ? `blur(${blurAmount})` : undefined}
+			style:filter={mobileBlur ? `blur(${mobileBlur})` : undefined}
 		></div>
 	{/each}
 </div>
