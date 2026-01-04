@@ -1,5 +1,6 @@
 <script lang="ts" module>
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { Component } from 'svelte';
 
 	export type LordIconTrigger =
 		| 'hover'
@@ -24,6 +25,7 @@
 		loading?: 'lazy' | 'interaction' | 'delay';
 		size?: number;
 		currentColor?: boolean;
+		fallbackIcon?: Component<{ class?: string }>;
 	};
 </script>
 
@@ -44,10 +46,12 @@
 		loading,
 		size = 24,
 		currentColor = false,
+		fallbackIcon,
 		...restProps
 	}: LordIconProps = $props();
 
 	let initialized = $state(false);
+	let iconLoaded = $state(false);
 
 	onMount(async () => {
 		if (browser && !customElements.get('lord-icon')) {
@@ -57,7 +61,12 @@
 		initialized = true;
 	});
 
+	function handleIconReady() {
+		iconLoaded = true;
+	}
+
 	const iconStyle = $derived(`width: ${size}px; height: ${size}px;`);
+	const showFallback = $derived(!iconLoaded && fallbackIcon);
 </script>
 
 {#if initialized}
@@ -71,9 +80,15 @@
 		target={target || undefined}
 		loading={loading || undefined}
 		style={iconStyle}
-		class={cn(currentColor && 'current-color', className)}
+		class={cn(currentColor && 'current-color', showFallback && 'opacity-0 absolute', className)}
+		onready={handleIconReady}
 		{...restProps}
 	></lord-icon>
+	{#if showFallback}
+		<svelte:component this={fallbackIcon} class="shrink-0" style={iconStyle} />
+	{/if}
+{:else if fallbackIcon}
+	<svelte:component this={fallbackIcon} class="shrink-0" style={iconStyle} />
 {:else}
 	<div style={iconStyle} class={cn('animate-pulse bg-muted rounded', className)}></div>
 {/if}

@@ -4,6 +4,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { AnimatedButton } from '$lib/components/ui/lordicon';
 	import { LORDICON_ICONS } from '$lib/config/lordicon';
+	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import featuredProjects from '$lib/data/featured.json';
 
 	interface FeaturedProject {
@@ -38,6 +39,7 @@
 									</p>
 									<AnimatedButton
 											icon={LORDICON_ICONS.launch}
+											fallbackIcon={ExternalLinkIcon}
 											class="mt-auto self-start"
 											label="Check it out"
 											variant="default"

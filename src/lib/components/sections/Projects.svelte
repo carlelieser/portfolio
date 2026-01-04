@@ -16,6 +16,7 @@
 	import StarIcon from '@lucide/svelte/icons/star';
 	import GitForkIcon from '@lucide/svelte/icons/git-fork';
 	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
+	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import FeaturedProjects from './FeaturedProjects.svelte';
 
 	interface GitHubRepo {
@@ -180,6 +181,7 @@
 						<CardFooter>
 							<AnimatedButton
 								icon={LORDICON_ICONS.launch}
+								fallbackIcon={ExternalLinkIcon}
 								label="View"
 								variant="outline"
 								size="sm"

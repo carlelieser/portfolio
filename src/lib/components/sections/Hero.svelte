@@ -2,6 +2,8 @@
 	import { AnimatedButton } from '$lib/components/ui/lordicon';
 	import { LORDICON_ICONS } from '$lib/config/lordicon';
 	import Hero3DBackground from '$lib/components/effects/Hero3DBackground.svelte';
+	import MailIcon from '@lucide/svelte/icons/mail';
+	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 </script>
 
 <section
@@ -25,6 +27,7 @@
 		<div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
 			<AnimatedButton
 				icon={LORDICON_ICONS.mail}
+				fallbackIcon={MailIcon}
 				label="Get in Touch"
 				size="lg"
 				class="text-base px-8"
@@ -33,6 +36,7 @@
 			/>
 			<AnimatedButton
 				icon={LORDICON_ICONS.launch}
+				fallbackIcon={ExternalLinkIcon}
 				label="View Projects"
 				variant="secondary"
 				size="lg"

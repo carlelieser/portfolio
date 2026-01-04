@@ -1,6 +1,7 @@
 <script lang="ts" module>
 	import type { ButtonProps, ButtonSize, ButtonVariant } from '../button/button.svelte';
 	import type { LordIconTrigger, LordIconStroke } from './lordicon.svelte';
+	import type { Component } from 'svelte';
 
 	export type AnimatedButtonProps = Omit<ButtonProps, 'children'> & {
 		icon: string;
@@ -11,6 +12,7 @@
 		iconStroke?: LordIconStroke;
 		iconSpeed?: number;
 		iconCurrentColor?: boolean;
+		fallbackIcon?: Component<{ class?: string }>;
 		label?: string;
 	};
 </script>
@@ -30,6 +32,7 @@
 		iconStroke,
 		iconSpeed,
 		iconCurrentColor = true,
+		fallbackIcon,
 		label,
 		variant = 'default',
 		size = 'default',
@@ -58,6 +61,7 @@
 			currentColor={iconCurrentColor}
 			size={iconSize}
 			target={`#${buttonId}`}
+			{fallbackIcon}
 		/>
 	{/if}
 	{#if label}
@@ -73,6 +77,7 @@
 			currentColor={iconCurrentColor}
 			size={iconSize}
 			target={`#${buttonId}`}
+			{fallbackIcon}
 		/>
 	{/if}
 </Button>
