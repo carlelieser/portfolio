@@ -14,7 +14,7 @@
 	import GithubIcon from '@lucide/svelte/icons/github';
 	import StarIcon from '@lucide/svelte/icons/star';
 	import GitForkIcon from '@lucide/svelte/icons/git-fork';
-	import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
+	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 	import FeaturedProjects from './FeaturedProjects.svelte';
 
 	interface GitHubRepo {
@@ -192,26 +192,24 @@
 						</CardFooter>
 					</Card>
 				{/each}
+
+				<!-- View More Card - fills grid whitespace -->
+				<a
+					href="https://github.com/carlelieser?tab=repositories"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="group flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-border bg-muted/30 p-8 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50"
+				>
+					<div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+						<GithubIcon class="w-8 h-8" />
+					</div>
+					<div class="text-center">
+						<p class="font-semibold text-foreground group-hover:text-primary transition-colors">View More</p>
+						<p class="text-sm text-muted-foreground">Explore all repositories</p>
+					</div>
+					<ArrowRightIcon class="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+				</a>
 			{/if}
-		</div>
-
-		<div class="flex justify-center my-8">
-			<EllipsisIcon class="w-6 h-6 text-muted-foreground" />
-		</div>
-
-		<!-- GitHub CTA -->
-		<div class="mt-12 text-center">
-			<p class="text-muted-foreground mb-4">More projects on GitHub</p>
-			<AnimatedButton
-				icon={LORDICON_ICONS.launch}
-				label="@carlelieser"
-				variant="outline"
-				iconSize={18}
-				iconPosition="right"
-				href="https://github.com/carlelieser"
-				target="_blank"
-				rel="noopener noreferrer"
-			/>
 		</div>
 	</div>
 </section>
