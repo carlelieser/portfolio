@@ -11,10 +11,11 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { AnimatedButton } from '$lib/components/ui/lordicon';
 	import { LORDICON_ICONS } from '$lib/config/lordicon';
-	import { Github, Star, GitFork } from 'lucide-svelte';
+	import GithubIcon from '@lucide/svelte/icons/github';
+	import StarIcon from '@lucide/svelte/icons/star';
+	import GitForkIcon from '@lucide/svelte/icons/git-fork';
+	import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
 	import FeaturedProjects from './FeaturedProjects.svelte';
-	import { RepoCTA } from '$lib/components/ui/repo-cta';
-	import { webLLMService } from '$lib/services/webllm';
 
 	interface GitHubRepo {
 		name: string;
@@ -32,10 +33,13 @@
 	let loading = true;
 	let error: string | null = null;
 
+	let hidden = ["nitshift-site"]
+
 	async function fetchGitHubRepos() {
 		try {
+			const excludeRepos = hidden.map(repo => `+-repo:${GITHUB_USERNAME}/${repo}`).join('');
 			const response = await fetch(
-				`https://api.github.com/search/repositories?q=user:${GITHUB_USERNAME}+fork:false+-repo:${GITHUB_USERNAME}/portfolio&sort=updated&order=desc&per_page=6`,
+				`https://api.github.com/search/repositories?q=user:${GITHUB_USERNAME}+fork:false+-repo:${GITHUB_USERNAME}/portfolio${excludeRepos}&sort=updated&order=desc&per_page=3`,
 				{
 					headers: {
 						Accept: 'application/vnd.github.v3+json'
@@ -58,12 +62,6 @@
 
 	onMount(() => {
 		fetchGitHubRepos();
-		// Initialize LLM for CTA generation (non-blocking)
-		if (webLLMService.isSupported()) {
-			webLLMService.initialize().catch(() => {
-				// Silently fail - fallback CTAs will be used
-			});
-		}
 	});
 
 	function getLanguageColor(language: string | null): string {
@@ -82,7 +80,7 @@
 	}
 </script>
 
-<section id="projects" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+<section id="projects" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30 border-b">
 	<div class="max-w-6xl mx-auto">
 		<div class="text-center mb-12">
 			<p class="text-sm font-mono text-primary tracking-widest uppercase mb-3">Work</p>
@@ -139,18 +137,18 @@
 						<CardHeader>
 							<div class="flex items-start justify-between">
 								<div class="p-2 rounded-lg bg-primary/10 text-primary mb-4">
-									<Github class="w-6 h-6" />
+									<GithubIcon class="w-6 h-6" />
 								</div>
 								<div class="flex items-center gap-3 text-xs font-mono text-muted-foreground">
 									{#if repo.stargazers_count > 0}
 										<span class="flex items-center gap-1">
-											<Star class="w-3.5 h-3.5" />
+											<StarIcon class="w-3.5 h-3.5" />
 											{repo.stargazers_count}
 										</span>
 									{/if}
 									{#if repo.forks_count > 0}
 										<span class="flex items-center gap-1">
-											<GitFork class="w-3.5 h-3.5" />
+											<GitForkIcon class="w-3.5 h-3.5" />
 											{repo.forks_count}
 										</span>
 									{/if}
@@ -179,20 +177,26 @@
 							</div>
 						</CardContent>
 						<CardFooter>
-							<RepoCTA
-								repo={{
-									name: repo.name,
-									description: repo.description,
-									language: repo.language,
-									topics: repo.topics
-								}}
+							<AnimatedButton
+								icon={LORDICON_ICONS.launch}
+								label="View"
+								variant="outline"
+								size="sm"
+								iconSize={16}
+								iconPosition="right"
 								href={repo.html_url}
+								target="_blank"
+								rel="noopener noreferrer"
 								class="ml-auto"
 							/>
 						</CardFooter>
 					</Card>
 				{/each}
 			{/if}
+		</div>
+
+		<div class="flex justify-center my-8">
+			<EllipsisIcon class="w-6 h-6 text-muted-foreground" />
 		</div>
 
 		<!-- GitHub CTA -->

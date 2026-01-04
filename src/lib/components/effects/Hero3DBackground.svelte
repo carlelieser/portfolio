@@ -154,29 +154,29 @@
 				phaseZ: random(0, Math.PI * 2),
 				phaseRotX: random(0, Math.PI * 2),
 				phaseRotY: random(0, Math.PI * 2),
-				// Medium speeds for visible, fluid motion
-				speedX: random(0.3, 0.6),
-				speedY: random(0.25, 0.5),
-				speedZ: random(0.2, 0.4),
-				speedRotX: random(0.35, 0.55),
-				speedRotY: random(0.3, 0.5),
-				// Amplitude of motion
-				amplitudeX: random(25, 60),
-				amplitudeY: random(20, 50),
-				amplitudeZ: random(30, 70),
-				amplitudeRotX: random(3, 6),
-				amplitudeRotY: random(3, 6)
+				// Faster speeds for more dynamic, bouncy motion
+				speedX: random(0.6, 1.2),
+				speedY: random(0.5, 1.0),
+				speedZ: random(0.4, 0.8),
+				speedRotX: random(0.7, 1.1),
+				speedRotY: random(0.6, 1.0),
+				// Larger amplitude for more visible bouncing
+				amplitudeX: random(60, 120),
+				amplitudeY: random(50, 100),
+				amplitudeZ: random(50, 100),
+				amplitudeRotX: random(6, 12),
+				amplitudeRotY: random(6, 12)
 			},
 			// Blob morphing parameters (8 control points for border-radius)
 			blob: {
 				// Each corner has 2 values (horizontal/vertical radius)
 				// 8 independent phases for organic morphing
 				phases: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
-				// Medium speeds for visible morphing
-				speeds: Array.from({ length: 8 }, () => random(0.3, 0.6)),
+				// Faster speeds for more fluid morphing
+				speeds: Array.from({ length: 8 }, () => random(0.6, 1.2)),
 				// Secondary wave for more organic feel
 				phases2: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
-				speeds2: Array.from({ length: 8 }, () => random(0.4, 0.7)),
+				speeds2: Array.from({ length: 8 }, () => random(0.8, 1.4)),
 				// Higher base radius values for rounder blobs (60-90%)
 				baseRadii: Array.from({ length: 8 }, () => random(60, 90))
 			}
@@ -396,9 +396,9 @@
 		{@const floatRotY = Math.sin(time * shape.float.speedRotY + shape.float.phaseRotY) * shape.float.amplitudeRotY}
 		{@const nudgeStrength = 15}
 		{@const blobRadii = shape.blob.phases.map((phase, idx) => {
-			const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 12;
-			const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 8;
-			return Math.max(40, shape.blob.baseRadii[idx] + wave1 + wave2);
+			const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 18;
+			const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 12;
+			return Math.max(35, shape.blob.baseRadii[idx] + wave1 + wave2);
 		})}
 		{@const blobRadius = `${blobRadii[0]}% ${blobRadii[1]}% ${blobRadii[2]}% ${blobRadii[3]}% / ${blobRadii[4]}% ${blobRadii[5]}% ${blobRadii[6]}% ${blobRadii[7]}%`}
 		{@const gradient = getGradient(colorStates[shape.id])}

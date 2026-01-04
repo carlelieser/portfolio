@@ -53,11 +53,11 @@
 										{/each}
 									</div>
 								</div>
-								<div class="hidden md:flex items-center justify-center">
+								<div class="h-full overflow-hidden rounded-4xl flex items-center justify-center">
 									<img
-										src={project.image}
-										alt={project.title}
-										class="w-full max-w-xs aspect-square rounded-2xl object-cover"
+											src={project.image}
+											alt={project.title}
+											class="w-full rounded-4xl"
 									/>
 								</div>
 							</div>
