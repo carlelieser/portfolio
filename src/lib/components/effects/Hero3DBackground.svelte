@@ -132,15 +132,19 @@
 
 	/** Generate random shapes on mount */
 	function generateShapes() {
-		return Array.from({ length: shapeCount }, (_, i) => ({
+		return Array.from({ length: shapeCount }, (_, i) => {
+			// First shape is always centered (for mobile text contrast)
+			const isHeroShape = i === 0;
+			return {
 			id: i,
-			// Size: 400-800px
-			size: Math.floor(random(400, 800)),
-			// Position: spread across the viewport
-			top: `${random(5, 70)}%`,
-			left: `${random(5, 85)}%`,
+			isHeroShape,
+			// Size: 400-800px (hero shape is larger)
+			size: Math.floor(isHeroShape ? random(500, 700) : random(400, 800)),
+			// Position: hero shape centered, others spread across viewport
+			top: isHeroShape ? '35%' : `${random(5, 70)}%`,
+			left: isHeroShape ? '50%' : `${random(5, 85)}%`,
 			// Depth: -250px to -50px (further = smaller movement)
-			z: random(-250, -50),
+			z: isHeroShape ? -100 : random(-250, -50),
 			// Initial rotation
 			rotX: random(-5, 5),
 			rotY: random(-5, 5),
@@ -180,7 +184,8 @@
 				// Higher base radius values for rounder blobs (60-90%)
 				baseRadii: Array.from({ length: 8 }, () => random(60, 90))
 			}
-		}));
+		};
+		});
 	}
 
 	/** Generated shapes - created once on component init */
@@ -413,18 +418,21 @@
 		{@const blobRadius = `${blobRadii[0]}% ${blobRadii[1]}% ${blobRadii[2]}% ${blobRadii[3]}% / ${blobRadii[4]}% ${blobRadii[5]}% ${blobRadii[6]}% ${blobRadii[7]}%`}
 		{@const gradient = getGradient(colorStates[shape.id])}
 		{@const mobileBlur = isMobile ? '40px' : blurAmount}
+		{@const mobileSize = isMobile ? (shape.isHeroShape ? shape.size * 0.9 : shape.size * 0.7) : shape.size}
 		<div
 			class="absolute"
 			class:will-change-transform={!isMobile}
 			style:top={shape.top}
 			style:left={shape.left}
-			style:width="{isMobile ? shape.size * 0.7 : shape.size}px"
-			style:height="{isMobile ? shape.size * 0.7 : shape.size}px"
+			style:width="{mobileSize}px"
+			style:height="{mobileSize}px"
 			style:opacity={opacity}
 			style:border-radius={blobRadius}
 			style:background={gradient}
 			style:transform={isMobile
-				? `translateZ(${shape.z}px)`
+				? shape.isHeroShape
+					? `translate(-50%, -50%) translateZ(${shape.z}px)`
+					: `translateZ(${shape.z}px)`
 				: `translateX(${floatX + smoothMouseX * nudgeStrength}px)
 				   translateY(${floatY + smoothMouseY * nudgeStrength}px)
 				   translateZ(${shape.z + floatZ}px)
