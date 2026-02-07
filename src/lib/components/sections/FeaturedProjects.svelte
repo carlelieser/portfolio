@@ -31,7 +31,7 @@
 				<Carousel.Item>
 					<div class="p-1">
 						<Card.Root>
-							<div class="grid md:grid-cols-2 gap-6 p-6 sm:p-8">
+							<div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 p-6 sm:p-8">
 								<div class="flex flex-col gap-4">
 									<h3 class="text-2xl md:text-4xl font-bold">{project.title}</h3>
 									<p class="text-muted-foreground leading-relaxed">
