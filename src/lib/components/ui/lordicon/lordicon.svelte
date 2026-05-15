@@ -25,7 +25,7 @@
 		loading?: 'lazy' | 'interaction' | 'delay';
 		size?: number;
 		currentColor?: boolean;
-		fallbackIcon?: Component<{ class?: string }>;
+		fallbackIcon?: Component<{ class?: string; style?: string }>;
 	};
 </script>
 
@@ -85,10 +85,10 @@
 		{...restProps}
 	></lord-icon>
 	{#if showFallback}
-		<svelte:component this={fallbackIcon} class="shrink-0" style={iconStyle} />
+		<fallbackIcon class="shrink-0" style={iconStyle} />
 	{/if}
 {:else if fallbackIcon}
-	<svelte:component this={fallbackIcon} class="shrink-0" style={iconStyle} />
+	<fallbackIcon class="shrink-0" style={iconStyle} />
 {:else}
 	<div style={iconStyle} class={cn('animate-pulse bg-muted rounded', className)}></div>
 {/if}
