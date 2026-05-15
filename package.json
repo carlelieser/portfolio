@@ -53,6 +53,9 @@
 		"typescript": "^5.9.3",
 		"vite": "^7.2.6"
 	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["esbuild"]
+	},
 	"dependencies": {
 		"@lordicon/element": "^2.0.1",
 		"@sinclair/typebox": "^0.34.46",
