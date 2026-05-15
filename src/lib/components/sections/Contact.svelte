@@ -10,7 +10,9 @@
 	<div class="max-w-3xl mx-auto text-center">
 		<div class="mb-12">
 			<p class="text-sm font-mono text-primary tracking-widest uppercase mb-3">Contact</p>
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">Let's Work Together</h2>
+			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+				Let's Work Together
+			</h2>
 			<div class="flex justify-center mb-6">
 				<div class="w-16 h-0.5 bg-primary/40 rounded-full"></div>
 			</div>

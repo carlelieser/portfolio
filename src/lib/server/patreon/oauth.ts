@@ -121,8 +121,10 @@ export async function refreshAccessToken(refreshToken: string): Promise<PatreonT
 export async function fetchUserIdentity(accessToken: string): Promise<PatreonIdentityResponse> {
 	// Request identity with memberships and campaign info included
 	const fields = new URLSearchParams({
-		'fields[user]': 'email,first_name,last_name,full_name,image_url,thumb_url,url,is_email_verified,created',
-		'fields[member]': 'patron_status,is_follower,pledge_cadence,currently_entitled_amount_cents,lifetime_support_cents,campaign_lifetime_support_cents,last_charge_status,last_charge_date,next_charge_date,will_pay_amount_cents',
+		'fields[user]':
+			'email,first_name,last_name,full_name,image_url,thumb_url,url,is_email_verified,created',
+		'fields[member]':
+			'patron_status,is_follower,pledge_cadence,currently_entitled_amount_cents,lifetime_support_cents,campaign_lifetime_support_cents,last_charge_status,last_charge_date,next_charge_date,will_pay_amount_cents',
 		include: 'memberships'
 	});
 
@@ -149,14 +151,12 @@ export async function fetchUserIdentity(accessToken: string): Promise<PatreonIde
  */
 export function processUserIdentity(identity: PatreonIdentityResponse): PatreonUserInfo {
 	const user = identity.data;
-	const memberships = (identity.included?.filter(
-		(item): item is PatreonMembershipData => item.type === 'member'
-	)) ?? [];
+	const memberships =
+		identity.included?.filter((item): item is PatreonMembershipData => item.type === 'member') ??
+		[];
 
 	// Find the first active membership (if any)
-	const activeMembership = memberships.find(
-		(m) => m.attributes.patron_status === 'active_patron'
-	);
+	const activeMembership = memberships.find((m) => m.attributes.patron_status === 'active_patron');
 
 	// Get membership info (prefer active, fall back to first)
 	const membership = activeMembership ?? memberships[0];

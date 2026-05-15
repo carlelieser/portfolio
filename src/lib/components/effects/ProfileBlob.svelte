@@ -153,17 +153,8 @@
 	const blobPath = $derived(getBlobPath(time));
 </script>
 
-<div
-	class="relative"
-	style:width="{size}px"
-	style:height="{size}px"
->
-	<svg
-		viewBox="0 0 100 100"
-		class="absolute inset-0 w-full h-full"
-		role="img"
-		aria-label={alt}
-	>
+<div class="relative" style:width="{size}px" style:height="{size}px">
+	<svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full" role="img" aria-label={alt}>
 		<defs>
 			<!-- Blob clip path -->
 			<clipPath id="blob-clip">
@@ -207,17 +198,9 @@
 		/>
 
 		<!-- Gradient overlay on image -->
-		<path
-			d={blobPath}
-			fill="url(#blob-gradient)"
-		/>
+		<path d={blobPath} fill="url(#blob-gradient)" />
 
 		<!-- Outer stroke -->
-		<path
-			d={blobPath}
-			fill="none"
-			stroke="hsl(var(--primary) / 0.2)"
-			stroke-width="0.8"
-		/>
+		<path d={blobPath} fill="none" stroke="hsl(var(--primary) / 0.2)" stroke-width="0.8" />
 	</svg>
 </div>

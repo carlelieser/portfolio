@@ -38,16 +38,16 @@
 										{project.description}
 									</p>
 									<AnimatedButton
-											icon={LORDICON_ICONS.launch}
-											fallbackIcon={ExternalLinkIcon}
-											class="mt-auto self-start"
-											label="Check it out"
-											variant="default"
-											iconSize={18}
-											iconPosition="right"
-											href={project.url}
-											target="_blank"
-											rel="noopener noreferrer"
+										icon={LORDICON_ICONS.launch}
+										fallbackIcon={ExternalLinkIcon}
+										class="mt-auto self-start"
+										label="Check it out"
+										variant="default"
+										iconSize={18}
+										iconPosition="right"
+										href={project.url}
+										target="_blank"
+										rel="noopener noreferrer"
 									/>
 									<div class="flex flex-wrap gap-2">
 										{#each project.tags as tag}
@@ -56,11 +56,7 @@
 									</div>
 								</div>
 								<div class="h-full overflow-hidden rounded-4xl flex items-center justify-center">
-									<img
-											src={project.image}
-											alt={project.title}
-											class="w-full rounded-4xl"
-									/>
+									<img src={project.image} alt={project.title} class="w-full rounded-4xl" />
 								</div>
 							</div>
 						</Card.Root>

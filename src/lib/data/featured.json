@@ -4,32 +4,20 @@
 		"description": "An AI-powered mental wellness app with multiple virtual coaches, each with their own personality and approach. Built with a modern full-stack architecture.",
 		"url": "https://app.virtuestrong.ai",
 		"image": "/images/projects/virtuestrong.png",
-		"tags": [
-			"Mental Wellness",
-			"AI Coaching",
-			"Conversational AI"
-		]
+		"tags": ["Mental Wellness", "AI Coaching", "Conversational AI"]
 	},
 	{
 		"title": "Aria",
 		"description": "A powerful, modular, and extensible cross-platform music player built with TypeScript & React Native.",
 		"url": "https://github.com/carlelieser/aria",
 		"image": "/images/projects/aria.png",
-		"tags": [
-			"Music Player",
-			"React Native",
-			"Cross-Platform"
-		]
+		"tags": ["Music Player", "React Native", "Cross-Platform"]
 	},
 	{
 		"title": "Nitshift",
 		"description": "Multi-monitor brightness control for Windows with DDC-CI support, software dimming, and smart scheduling.",
 		"url": "https://nitshift.com",
 		"image": "/images/projects/nitshift.png",
-		"tags": [
-			"Desktop App",
-			"Electron",
-			"Windows"
-		]
+		"tags": ["Desktop App", "Electron", "Windows"]
 	}
 ]

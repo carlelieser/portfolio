@@ -8,10 +8,7 @@
 
 <svelte:head>
 	<title>Carlos Santos | Full-Stack Software Engineer</title>
-	<meta
-		name="description"
-		content="A home for my projects and a way to connect."
-	/>
+	<meta name="description" content="A home for my projects and a way to connect." />
 </svelte:head>
 
 <main>

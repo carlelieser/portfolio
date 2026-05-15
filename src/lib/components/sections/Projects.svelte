@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
+	import { onMount } from 'svelte';
 	import {
 		Card,
 		CardContent,
@@ -8,9 +8,9 @@
 		CardHeader,
 		CardTitle
 	} from '$lib/components/ui/card';
-	import {Badge} from '$lib/components/ui/badge';
-	import {AnimatedButton} from '$lib/components/ui/lordicon';
-	import {LORDICON_ICONS} from '$lib/config/lordicon';
+	import { Badge } from '$lib/components/ui/badge';
+	import { AnimatedButton } from '$lib/components/ui/lordicon';
+	import { LORDICON_ICONS } from '$lib/config/lordicon';
 	import * as Empty from '$lib/components/ui/empty';
 	import GithubIcon from '@lucide/svelte/icons/github';
 	import StarIcon from '@lucide/svelte/icons/star';
@@ -38,7 +38,7 @@
 	let loading = true;
 	let error: string | null = null;
 
-	let hidden = ["nitshift-site"]
+	let hidden = ['nitshift-site'];
 
 	function extractFirstImageUrl(markdown: string, rawBase: string): string | null {
 		const htmlMatch = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
@@ -51,9 +51,12 @@
 	async function fetchRepoIcon(repo: GitHubRepo): Promise<string | null> {
 		try {
 			const rawBase = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repo.name}/${repo.default_branch}`;
-			const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/readme`, {
-				headers: { Accept: 'application/vnd.github.v3+json' }
-			});
+			const res = await fetch(
+				`https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/readme`,
+				{
+					headers: { Accept: 'application/vnd.github.v3+json' }
+				}
+			);
 			if (!res.ok) return null;
 			const data = await res.json();
 			const content = atob(data.content.replace(/\n/g, ''));
@@ -65,7 +68,7 @@
 
 	async function fetchGitHubRepos() {
 		try {
-			const excludeRepos = hidden.map(repo => `+-repo:${GITHUB_USERNAME}/${repo}`).join('');
+			const excludeRepos = hidden.map((repo) => `+-repo:${GITHUB_USERNAME}/${repo}`).join('');
 			const response = await fetch(
 				`https://api.github.com/search/repositories?q=user:${GITHUB_USERNAME}+fork:false+-repo:${GITHUB_USERNAME}/portfolio${excludeRepos}&sort=updated&order=desc&per_page=6`,
 				{
@@ -81,7 +84,9 @@
 
 			const data = await response.json();
 			totalRepoCount = data.total_count;
-			repos = (data.items as GitHubRepo[]).filter((repo) => !repo.name.includes('.github') && !!repo.description);
+			repos = (data.items as GitHubRepo[]).filter(
+				(repo) => !repo.name.includes('.github') && !!repo.description
+			);
 
 			const icons = await Promise.all(repos.map(fetchRepoIcon));
 			repos = repos.map((repo, i) => ({ ...repo, iconUrl: icons[i] }));
@@ -116,8 +121,9 @@
 	<div class="max-w-6xl mx-auto">
 		<div class="text-center mb-12">
 			<p class="text-sm font-mono text-primary tracking-widest uppercase mb-3">My work</p>
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">Websites, Mobile Apps, & Desktop
-				Software</h2>
+			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+				Websites, Mobile Apps, & Desktop Software
+			</h2>
 			<div class="flex justify-center mb-6">
 				<div class="w-16 h-0.5 bg-primary/40 rounded-full"></div>
 			</div>
@@ -127,7 +133,7 @@
 		</div>
 
 		<!-- Featured Projects -->
-		<FeaturedProjects/>
+		<FeaturedProjects />
 
 		<!-- GitHub Repos Grid -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -173,27 +179,31 @@
 									{#if repo.iconUrl}
 										<img src={repo.iconUrl} alt={repo.name} class="size-10 object-contain" />
 									{:else}
-										<GithubIcon class="size-6"/>
+										<GithubIcon class="size-6" />
 									{/if}
 								</div>
 								<div class="flex items-center gap-3 text-xs font-mono text-muted-foreground">
 									{#if repo.stargazers_count > 0}
 										<span class="flex items-center gap-1">
-											<StarIcon class="w-3.5 h-3.5"/>
+											<StarIcon class="w-3.5 h-3.5" />
 											{repo.stargazers_count}
 										</span>
 									{/if}
 									{#if repo.forks_count > 0}
 										<span class="flex items-center gap-1">
-											<GitForkIcon class="w-3.5 h-3.5"/>
+											<GitForkIcon class="w-3.5 h-3.5" />
 											{repo.forks_count}
 										</span>
 									{/if}
 								</div>
 							</div>
 							<CardTitle class="text-xl group-hover:text-primary transition-colors">
-								<a href={repo.html_url} target="_blank" rel="noopener noreferrer"
-								   class="hover:underline">
+								<a
+									href={repo.html_url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="hover:underline"
+								>
 									{repo.name}
 								</a>
 							</CardTitle>
@@ -204,8 +214,10 @@
 						<CardContent class="flex-1">
 							<div class="flex flex-wrap items-center gap-2">
 								{#if repo.language}
-									<Badge variant="outline"
-									       class="gap-1.5 bg-primary/10 text-primary border-transparent font-mono">
+									<Badge
+										variant="outline"
+										class="gap-1.5 bg-primary/10 text-primary border-transparent font-mono"
+									>
 										<span class="w-2 h-2 rounded-full {getLanguageColor(repo.language)}"></span>
 										{repo.language}
 									</Badge>
@@ -217,17 +229,17 @@
 						</CardContent>
 						<CardFooter>
 							<AnimatedButton
-									icon={LORDICON_ICONS.launch}
-									fallbackIcon={ExternalLinkIcon}
-									label="View"
-									variant="outline"
-									size="sm"
-									iconSize={16}
-									iconPosition="right"
-									href={repo.html_url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="ml-auto"
+								icon={LORDICON_ICONS.launch}
+								fallbackIcon={ExternalLinkIcon}
+								label="View"
+								variant="outline"
+								size="sm"
+								iconSize={16}
+								iconPosition="right"
+								href={repo.html_url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="ml-auto"
 							/>
 						</CardFooter>
 					</Card>
@@ -235,22 +247,23 @@
 
 				<!-- View More Card - fills grid whitespace -->
 				<a
-						href="https://github.com/carlelieser?tab=repositories"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="group"
+					href="https://github.com/carlelieser?tab=repositories"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="group"
 				>
 					<Empty.Root
-							class="h-full rounded-xl border border-dashed border-border bg-muted/30 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50">
+						class="h-full rounded-xl border border-dashed border-border bg-muted/30 transition-all duration-300 hover:border-primary/50 hover:bg-muted/50"
+					>
 						<Empty.Header>
 							<Empty.Media variant="icon">
-								<GithubIcon class="size-8"/>
+								<GithubIcon class="size-8" />
 							</Empty.Media>
 							<Empty.Title>View More</Empty.Title>
 							<Empty.Description>Explore all {totalRepoCount ?? ''} repositories</Empty.Description>
 						</Empty.Header>
 						<Empty.Content>
-							<ArrowRightIcon class="size-5 text-muted-foreground transition-all"/>
+							<ArrowRightIcon class="size-5 text-muted-foreground transition-all" />
 						</Empty.Content>
 					</Empty.Root>
 				</a>

@@ -124,7 +124,6 @@
 		return -(Math.cos(Math.PI * t) - 1) / 2;
 	}
 
-
 	/** Random number between min and max */
 	function random(min: number, max: number): number {
 		return Math.random() * (max - min) + min;
@@ -136,55 +135,55 @@
 			// First shape is always centered (for mobile text contrast)
 			const isHeroShape = i === 0;
 			return {
-			id: i,
-			isHeroShape,
-			// Size: 400-800px (hero shape is larger)
-			size: Math.floor(isHeroShape ? random(500, 700) : random(400, 800)),
-			// Position: hero shape centered, others spread across viewport
-			top: isHeroShape ? '35%' : `${random(5, 70)}%`,
-			left: isHeroShape ? '50%' : `${random(5, 85)}%`,
-			// Depth: -250px to -50px (further = smaller movement)
-			z: isHeroShape ? -100 : random(-250, -50),
-			// Initial rotation
-			rotX: random(-5, 5),
-			rotY: random(-5, 5),
-			// Parallax intensity based on depth (closer = more movement)
-			parallaxMultiplier: random(0.3, 1.5),
-			// Autonomous floating motion parameters
-			float: {
-				// Unique phase offset so shapes don't move in sync
-				phaseX: random(0, Math.PI * 2),
-				phaseY: random(0, Math.PI * 2),
-				phaseZ: random(0, Math.PI * 2),
-				phaseRotX: random(0, Math.PI * 2),
-				phaseRotY: random(0, Math.PI * 2),
-				// Faster speeds for more dynamic, bouncy motion
-				speedX: random(0.6, 1.2),
-				speedY: random(0.5, 1.0),
-				speedZ: random(0.4, 0.8),
-				speedRotX: random(0.7, 1.1),
-				speedRotY: random(0.6, 1.0),
-				// Larger amplitude for more visible bouncing
-				amplitudeX: random(60, 120),
-				amplitudeY: random(50, 100),
-				amplitudeZ: random(50, 100),
-				amplitudeRotX: random(6, 12),
-				amplitudeRotY: random(6, 12)
-			},
-			// Blob morphing parameters (8 control points for border-radius)
-			blob: {
-				// Each corner has 2 values (horizontal/vertical radius)
-				// 8 independent phases for organic morphing
-				phases: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
-				// Faster speeds for more fluid morphing
-				speeds: Array.from({ length: 8 }, () => random(0.6, 1.2)),
-				// Secondary wave for more organic feel
-				phases2: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
-				speeds2: Array.from({ length: 8 }, () => random(0.8, 1.4)),
-				// Higher base radius values for rounder blobs (60-90%)
-				baseRadii: Array.from({ length: 8 }, () => random(60, 90))
-			}
-		};
+				id: i,
+				isHeroShape,
+				// Size: 400-800px (hero shape is larger)
+				size: Math.floor(isHeroShape ? random(500, 700) : random(400, 800)),
+				// Position: hero shape centered, others spread across viewport
+				top: isHeroShape ? '35%' : `${random(5, 70)}%`,
+				left: isHeroShape ? '50%' : `${random(5, 85)}%`,
+				// Depth: -250px to -50px (further = smaller movement)
+				z: isHeroShape ? -100 : random(-250, -50),
+				// Initial rotation
+				rotX: random(-5, 5),
+				rotY: random(-5, 5),
+				// Parallax intensity based on depth (closer = more movement)
+				parallaxMultiplier: random(0.3, 1.5),
+				// Autonomous floating motion parameters
+				float: {
+					// Unique phase offset so shapes don't move in sync
+					phaseX: random(0, Math.PI * 2),
+					phaseY: random(0, Math.PI * 2),
+					phaseZ: random(0, Math.PI * 2),
+					phaseRotX: random(0, Math.PI * 2),
+					phaseRotY: random(0, Math.PI * 2),
+					// Faster speeds for more dynamic, bouncy motion
+					speedX: random(0.6, 1.2),
+					speedY: random(0.5, 1.0),
+					speedZ: random(0.4, 0.8),
+					speedRotX: random(0.7, 1.1),
+					speedRotY: random(0.6, 1.0),
+					// Larger amplitude for more visible bouncing
+					amplitudeX: random(60, 120),
+					amplitudeY: random(50, 100),
+					amplitudeZ: random(50, 100),
+					amplitudeRotX: random(6, 12),
+					amplitudeRotY: random(6, 12)
+				},
+				// Blob morphing parameters (8 control points for border-radius)
+				blob: {
+					// Each corner has 2 values (horizontal/vertical radius)
+					// 8 independent phases for organic morphing
+					phases: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
+					// Faster speeds for more fluid morphing
+					speeds: Array.from({ length: 8 }, () => random(0.6, 1.2)),
+					// Secondary wave for more organic feel
+					phases2: Array.from({ length: 8 }, () => random(0, Math.PI * 2)),
+					speeds2: Array.from({ length: 8 }, () => random(0.8, 1.4)),
+					// Higher base radius values for rounder blobs (60-90%)
+					baseRadii: Array.from({ length: 8 }, () => random(60, 90))
+				}
+			};
 		});
 	}
 
@@ -231,8 +230,6 @@
 	 */
 	let smoothMouseX = $state(0);
 	let smoothMouseY = $state(0);
-
-
 
 	/**
 	 * Accessibility: Detect and track user's motion preference.
@@ -362,7 +359,13 @@
 <!-- SVG Noise Filter -->
 <svg class="hidden" aria-hidden="true">
 	<filter id="noise">
-		<feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
+		<feTurbulence
+			type="fractalNoise"
+			baseFrequency="0.65"
+			numOctaves="3"
+			stitchTiles="stitch"
+			result="noise"
+		/>
 		<feColorMatrix type="saturate" values="0" in="noise" result="mono" />
 	</filter>
 </svg>
@@ -395,30 +398,44 @@
 	<!-- Noise Overlay (disabled on mobile for performance) -->
 	{#if noiseOpacity > 0 && !isMobile}
 		<div
-				class="absolute inset-0 pointer-events-none mix-blend-overlay"
-				style:opacity={noiseOpacity}
-				style:filter="url(#noise)"
-				aria-hidden="true"
+			class="absolute inset-0 pointer-events-none mix-blend-overlay"
+			style:opacity={noiseOpacity}
+			style:filter="url(#noise)"
+			aria-hidden="true"
 		></div>
 	{/if}
 	{#each shapes.slice(0, isMobile ? 3 : shapes.length) as shape (shape.id)}
-		{@const floatX = isMobile ? 0 : Math.sin(time * shape.float.speedX + shape.float.phaseX) * shape.float.amplitudeX}
-		{@const floatY = isMobile ? 0 : Math.sin(time * shape.float.speedY + shape.float.phaseY) * shape.float.amplitudeY}
-		{@const floatZ = isMobile ? 0 : Math.sin(time * shape.float.speedZ + shape.float.phaseZ) * shape.float.amplitudeZ}
-		{@const floatRotX = isMobile ? 0 : Math.sin(time * shape.float.speedRotX + shape.float.phaseRotX) * shape.float.amplitudeRotX}
-		{@const floatRotY = isMobile ? 0 : Math.sin(time * shape.float.speedRotY + shape.float.phaseRotY) * shape.float.amplitudeRotY}
+		{@const floatX = isMobile
+			? 0
+			: Math.sin(time * shape.float.speedX + shape.float.phaseX) * shape.float.amplitudeX}
+		{@const floatY = isMobile
+			? 0
+			: Math.sin(time * shape.float.speedY + shape.float.phaseY) * shape.float.amplitudeY}
+		{@const floatZ = isMobile
+			? 0
+			: Math.sin(time * shape.float.speedZ + shape.float.phaseZ) * shape.float.amplitudeZ}
+		{@const floatRotX = isMobile
+			? 0
+			: Math.sin(time * shape.float.speedRotX + shape.float.phaseRotX) * shape.float.amplitudeRotX}
+		{@const floatRotY = isMobile
+			? 0
+			: Math.sin(time * shape.float.speedRotY + shape.float.phaseRotY) * shape.float.amplitudeRotY}
 		{@const nudgeStrength = 15}
 		{@const blobRadii = isMobile
 			? shape.blob.baseRadii
 			: shape.blob.phases.map((phase, idx) => {
-				const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 18;
-				const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 12;
-				return Math.max(35, shape.blob.baseRadii[idx] + wave1 + wave2);
-			})}
+					const wave1 = Math.sin(time * shape.blob.speeds[idx] + phase) * 18;
+					const wave2 = Math.sin(time * shape.blob.speeds2[idx] + shape.blob.phases2[idx]) * 12;
+					return Math.max(35, shape.blob.baseRadii[idx] + wave1 + wave2);
+				})}
 		{@const blobRadius = `${blobRadii[0]}% ${blobRadii[1]}% ${blobRadii[2]}% ${blobRadii[3]}% / ${blobRadii[4]}% ${blobRadii[5]}% ${blobRadii[6]}% ${blobRadii[7]}%`}
 		{@const gradient = getGradient(colorStates[shape.id])}
 		{@const mobileBlur = isMobile ? '40px' : blurAmount}
-		{@const mobileSize = isMobile ? (shape.isHeroShape ? shape.size * 0.9 : shape.size * 0.7) : shape.size}
+		{@const mobileSize = isMobile
+			? shape.isHeroShape
+				? shape.size * 0.9
+				: shape.size * 0.7
+			: shape.size}
 		<div
 			class="absolute"
 			class:will-change-transform={!isMobile}
@@ -426,7 +443,7 @@
 			style:left={shape.left}
 			style:width="{mobileSize}px"
 			style:height="{mobileSize}px"
-			style:opacity={opacity}
+			style:opacity
 			style:border-radius={blobRadius}
 			style:background={gradient}
 			style:transform={isMobile

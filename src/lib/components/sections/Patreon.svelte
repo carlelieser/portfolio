@@ -16,7 +16,8 @@
 				<div class="w-16 h-0.5 bg-primary/40 rounded-full"></div>
 			</div>
 			<p class="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
-				Like what you see? A coffee goes a long way in keeping me caffeinated and coding. No pressure, but hey, I won't say no!
+				Like what you see? A coffee goes a long way in keeping me caffeinated and coding. No
+				pressure, but hey, I won't say no!
 			</p>
 		</div>
 
