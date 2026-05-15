@@ -11,13 +11,13 @@
 	let typed: Typed;
 
 	const taglines = [
-		'a Full Stack Engineer.',
-		'a Designer.',
-		'a Tinkerer.',
-		'a Photographer.',
-		'an amateur DJ.',
-		'a failed comedian.',
-		'Carlos Santos.'
+		'a Full Stack Magician.',
+		'a Pixel Pusher.',
+		'a Senior Bug Factory.',
+		'a Code Monkey.',
+		'Sir Fix-a-Lot.',
+		'Lord of the Strings',
+		'the Codefather.'
 	];
 
 	onMount(() => {
