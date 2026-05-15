@@ -15,7 +15,7 @@
 				<div class="w-16 h-0.5 bg-primary/40 rounded-full"></div>
 			</div>
 			<p class="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
-				Have a project in mind? Let's get in touch.
+				Have a project or idea in mind? Let's get in touch.
 			</p>
 		</div>
 
