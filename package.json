@@ -64,6 +64,7 @@
 		"lottie-web": "^5.13.0",
 		"lucide-svelte": "^0.561.0",
 		"randomcolor": "^0.6.2",
-		"three": "^0.182.0"
+		"three": "^0.182.0",
+		"typed.js": "^3.0.0"
 	}
 }
