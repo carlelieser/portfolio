@@ -16,7 +16,7 @@
 		'a Senior Bug Factory.',
 		'a Code Monkey.',
 		'Sir Fix-a-Lot.',
-		'Lord of the Strings',
+		'Lord of the Strings.',
 		'the Codefather.'
 	];
 
